@@ -1,0 +1,30 @@
+permissions:
+  contents: write 
+  
+steps:
+  - name: Checkout Repository
+    uses: actions/checkout@v4
+    
+  - name: Download and Convert Rules
+    run: |
+      echo "Downloading Hagezi Pro++ wildcard domains..."
+      curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw.txt
+      
+      echo "Converting into Surge DOMAIN-SET format..."
+      awk '!/^#/ && NF {print "." $1}' raw.txt > hagezi_pro_plus.list
+      
+      rm raw.txt
+      
+  - name: Commit and Push Changes
+    run: |
+      git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      git config --local user.name "github-actions[bot]"
+      
+      if [ -n "$(git status --porcelain)" ]; then
+        git add hagezi_pro_plus.list
+        git commit -m "Auto-update Surge rules: $(date +'%Y-%m-%d')"
+        git push
+        echo "✅ Rules are updated Push！"
+      else
+        echo "🤷‍♂️ Need not to update Push。"
+      fi
