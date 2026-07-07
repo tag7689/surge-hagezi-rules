@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "Downloading hagezi pro++ wildcard domains..."
           # Download wildcard branch
-          curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw_domains.txt
+          curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw_pro_plus.txt
           curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif-onlydomains.txt" -o raw_tif.txt
           
           echo "Converting Surge DOMAIN-SET format..."
