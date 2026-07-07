@@ -22,11 +22,13 @@ jobs:
           echo "Downloading hagezi pro++ wildcard domains..."
           # Download wildcard branch
           curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw_domains.txt
+          curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif-onlydomains.txt" -o raw_tif.txt
           
-          echo "Converting Surge RULE-SET format..."
-          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_domains.txt > hagezi_pro_plus.list
+          echo "Converting Surge DOMAIN-SET format..."
+          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_pro_plus.txt > hagezi_pro_plus.list
+          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_tif.txt > hagezi_tif.list
 
-          rm raw_domains.txt
+          rm raw_pro_plus.txt raw_tif.txt
 
       - name: Commit and Push Changes
         run: |
@@ -36,7 +38,7 @@ jobs:
           
           # Check updates, if yen then push
           if [ -n "$(git status --porcelain)" ]; then
-            git add hagezi_pro_plus.list
+            git add *.list
             git commit -m "Auto-update Surge rules: $(date +'%Y-%m-%d')"
             git pull --rebase
             git push
