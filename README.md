@@ -8,7 +8,7 @@ Powered by GitHub Actions, the conversion runs automatically every day at 20:00 
 
 Directly extracts HaGeZi's highly efficient wildcard onlydomains list.
 
-Utilizes Surge's native RULE-SET syntax (prefixing domains with .), which inherently supports subdomain matching. It maintains lightning-fast matching speeds even with over a hundred thousand rules.
+Utilizes Surge's native RULE-SET syntax (prefixing domains with DOMAIN-SUFFIX), which inherently supports subdomain matching. It maintains lightning-fast matching speeds even with over a hundred thousand rules.
 
 📜 License & Credits
 
