@@ -1,30 +1,45 @@
-permissions:
-  contents: write 
-  
-steps:
-  - name: Checkout Repository
-    uses: actions/checkout@v4
-    
-  - name: Download and Convert Rules
-    run: |
-      echo "Downloading Hagezi Pro++ wildcard domains..."
-      curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw.txt
-      
-      echo "Converting into Surge DOMAIN-SET format..."
-      awk '!/^#/ && NF {print "." $1}' raw.txt > hagezi_pro_plus.list
-      
-      rm raw.txt
-      
-  - name: Commit and Push Changes
-    run: |
-      git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      git config --local user.name "github-actions[bot]"
-      
-      if [ -n "$(git status --porcelain)" ]; then
-        git add hagezi_pro_plus.list
-        git commit -m "Auto-update Surge rules: $(date +'%Y-%m-%d')"
-        git push
-        echo "✅ Rules are updated Push！"
-      else
-        echo "🤷‍♂️ Need not to update Push。"
-      fi
+name: Auto Update Surge DOMAIN-SET
+
+# Trigger Rule
+on:
+  schedule:
+    - cron: '0 20 * * *' # Daily UTC 20:00 (TW 04:00) RUN
+  workflow_dispatch:     # grant right to allow GitHub trigger manually
+
+jobs:
+  update-rules:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download and Convert Rules
+        run: |
+          echo "Downloading hagezi pro++ wildcard domains..."
+          # Download wildcard branch
+          curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw_domains.txt
+          
+          echo "Converting Surge DOMAIN-SET format..."
+          awk '!/^#/ && NF {print "." $1}' raw_domains.txt > hagezi_pro_plus.list
+          
+          # Remove file
+          rm raw_domains.txt
+
+      - name: Commit and Push Changes
+        run: |
+          # Set Git bot
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Check any changes，if yes then push
+          if [ -n "$(git status --porcelain)" ]; then
+            git add hagezi_pro_plus.list
+            git commit -m "Auto-update Surge rules: $(date +'%Y-%m-%d')"
+            git push
+            echo "✅ Rules has updated and Push！"
+          else
+            echo "🤷‍♂️ No new rules or changes Push。"
+          fi
