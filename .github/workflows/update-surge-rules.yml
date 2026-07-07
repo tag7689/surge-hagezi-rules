@@ -1,4 +1,4 @@
-name: Auto Update Surge DOMAIN-SET
+name: Auto Update Surge RULE-SET
 
 # Trggier Rule
 on:
@@ -38,6 +38,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add hagezi_pro_plus.list
             git commit -m "Auto-update Surge rules: $(date +'%Y-%m-%d')"
+            git pull --rebase
             git push
             echo "✅ Rules updated and Push!"
           else
