@@ -6,7 +6,10 @@ This repository automatically fetches the Wildcard version of the [Hagezi Pro++ 
 
 Powered by GitHub Actions, the conversion runs automatically every day at 20:00 UTC. Zero server maintenance required.
 
-Directly extracts HaGeZi's highly efficient wildcard onlydomains list.
+Directly extracts HaGeZi's highly efficient wildcard onlydomains list:
+[HaGeZi Pro++](https://raw.githubusercontent.com/tag7689/surge-hagezi-rules/main/hagezi_pro_plus.list)
+[HaGeZi Normal](https://raw.githubusercontent.com/tag7689/surge-hagezi-rules/main/hagezi_pro_normal.list)
+[HaGeZi TIF](https://raw.githubusercontent.com/tag7689/surge-hagezi-rules/main/hagezi_tif.list)
 
 Utilizes Surge's native RULE-SET syntax (prefixing domains with DOMAIN-SUFFIX), which inherently supports subdomain matching. It maintains lightning-fast matching speeds even with over a hundred thousand rules.
 
