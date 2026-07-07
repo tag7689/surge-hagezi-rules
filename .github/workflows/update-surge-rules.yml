@@ -23,8 +23,8 @@ jobs:
           # Download wildcard branch
           curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw_domains.txt
           
-          echo "Converting Surge DOMAIN-SET format..."
-          awk '!/^#/ && NF {print "." $1}' raw_domains.txt > hagezi_pro_plus.list
+          echo "Converting Surge RULE-SET format..."
+          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_domains.txt > hagezi_pro_plus.list
 
           rm raw_domains.txt
 
