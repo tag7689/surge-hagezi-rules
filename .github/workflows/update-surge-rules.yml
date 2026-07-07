@@ -22,15 +22,13 @@ jobs:
           echo "Downloading hagezi pro++ wildcard domains..."
           # Download wildcard branch
           curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro.plus-onlydomains.txt" -o raw_pro_plus.txt
-          curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/multi-onlydomains.txt"  -o  raw_pro_normal.txt
           curl -sL "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif-onlydomains.txt" -o raw_tif.txt
           
           echo "Converting Surge DOMAIN-SET format..."
           awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_pro_plus.txt > hagezi_pro_plus.list
-          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_pro_normal.txt > hagezi_pro_normal.list
           awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_tif.txt > hagezi_tif.list
 
-          rm raw_pro_plus.txt raw_pro_normal.txt raw_tif.txt
+          rm raw_pro_plus.txt raw_tif.txt
 
       - name: Commit and Push Changes
         run: |
