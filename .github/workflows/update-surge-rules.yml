@@ -28,9 +28,12 @@ jobs:
           echo "Converting Surge DOMAIN-SET format..."
           awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_pro_plus.txt > hagezi_pro_plus.list
           awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_pro_normal.txt > hagezi_pro_normal.list
-          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_tif.txt > hagezi_tif.list
+          awk '!/^#/ && NF {print "DOMAIN-SUFFIX," $1}' raw_tif.txt > hagezi_tif.tmp.list
 
-          rm raw_pro_plus.txt raw_pro_normal.txt raw_tif.txt
+          echo "Spliting into files if large than 40MB"
+          split -C 40m --additional-suffix=.list hagezi_tif.tmp.list hagezi_tif_part_
+
+          rm raw_pro_plus.txt raw_pro_normal.txt raw_tif.txt hagezi_tif.tmp.list
 
       - name: Commit and Push Changes
         run: |
@@ -40,7 +43,7 @@ jobs:
           
           # Check updates, if yen then push
           if [ -n "$(git status --porcelain)" ]; then
-            git add *.list
+            git add hagezi_pro_plus.list hagezi_pro_normal.list hagezi_tif_part_*.list
             git commit -m "Auto-update Surge rules: $(date +'%Y-%m-%d')"
             git pull --rebase
             git push
